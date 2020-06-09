@@ -93,13 +93,13 @@ $('#add-to-cart').on('click', function (e) {
      * If a plan is returned from #getPlanSelection, then a user has selected a
      * warranty option.
      * 
-     * See the API reference for details on what the is included with the "plan"
+     * See the API reference for details on what is included with the "plan"
      * object.
      * 
      * If you are using an ecommerce addon (e.g. Shopify) this is where you
      * would use the respective add-to-cart helper function.
      * 
-     * For custom integrations, use use the plan data to determine which warranty
+     * For custom integrations, use the plan data to determine which warranty
      * id to add to the cart and at what price.
      */
      // add plan to cart, then handle form submission
