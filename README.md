@@ -8,7 +8,7 @@
 <p>Add the scripts to your page</p>
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/helloalfy/warranty-webui-sdk@latest/dist/alfy-webui-sdk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/helloalfy/warranty-webui-sdk@latest/dist/alfy-webui-sdk.min.js" charset="utf-8"></script>
 
 // Production
 <script>Alfy.config({ storeId: '<YOUR_ALFY_STORE_ID>' })</script>
