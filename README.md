@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://storage.googleapis.com/helloalfy-static-assets/logo.svg" />
+  <img src="https://assets.helloalfy.com/logo.svg" />
 
   <h1 align="center">Alfy Warranty WebUI SDK</h1>
 </p>
@@ -44,6 +44,8 @@ This element will be used as the container for the displayed warranty offer.  If
 
 ### Initialization
 
+#### Displaying multiple buttons
+
 ```js
 Alfy.buttons.render('#alfy-offer', {
   productId: '<PRODUCT_ID>',
@@ -51,6 +53,15 @@ Alfy.buttons.render('#alfy-offer', {
 ```
 
 >Note: to query DOM elements, we use the native <b>document.querySelector</b>.  For this reason we recommend using element ids instead of classes for selector references.
+
+#### Displaying a single button 
+
+When clicked, this button displays a modal, allowing the user to select a plan
+```js
+Alfy.buttons.renderSimple('#alfy-offer', {
+  productId: '<PRODUCT_ID>',
+})
+```
 
 ### Accessing the component instance
 It's possible to have multiple offers displayed on the same page and each might have their own product productId so each rendered component acts independently of each other. The component instance will be tied to the element/selector passed in during the call to  `Alfy.buttons.render` and will be used for API calls later in this guide.
@@ -209,20 +220,49 @@ Alfy.config({
    * productIds
    * @optional
    */
-  productIds: Array<string>,
+  productIds: string[],
   /**
    * optional theme configuration.  A theme passed in as an argument will
-   * override any theme retrieved from the Alfy Merchant Portal configuration
-   * and will fallback to a default theme if neither are present.
-   * 
+   * override any theme potentially retrieved from the Alfy Merchant configuration.
+   * These parameters can be also overridden through widgets dedicated rendering
+   * methods options. See the related methods reference for more information.
    * @optional
    */
   theme: {
-    primaryColor: string
+    primaryColor: string,
+    buttons: {
+      // ...
+    },
+    button: {
+      // ...
+    }
   }
 })
 ```
 
+#### Alfy.getConfiguration(storeId?: string)
+
+```js
+Alfy.getConfiguration(
+  /** @optional */
+  storeId
+).then((config) => {
+  // ...
+})
+```
+
+#### Alfy.getOffer(productId)
+
+```js
+Alfy.getOffer(
+  /** @required */
+  productId
+).then((offer) => {
+  if(offer && offer.plans && offer.plans.length) {
+    // ...
+  }
+})
+```
 
 #### Alfy.buttons.render(selector, options)
 
@@ -230,9 +270,82 @@ Alfy.config({
 Alfy.buttons.render('#offer-container', {
   /** @required */
   productId: string,
-  /** @optional */
-  theme: {
-    primaryColor: string
+  /**
+   * Callback on plan selection change
+   * @optional
+   */
+  onSelectionChange: (plan: IWarrantyPlan | null) => {},
+  /**
+   * optional theme configuration. Passed theme will merge and potentially override
+   * Alfy Merchant conf and theme options passed to Alfy.config
+   * @optional
+   */
+  theme?: {
+     /**
+      * for theme primary color for this widget
+      * @optional
+      */
+    primaryColor?: string,
+    buttons?: {
+      /**
+       * use this to force its default bg color
+       * @default transparent
+       * @optional
+       */
+      bgColor?: string,
+      /**
+       * disable headline text above buttons
+       * @default false
+       * @optional
+       */
+      disableCaption?: bool,
+      /**
+       * set button presentation theme
+       * @default false
+       * @optional
+       */
+      theme?: 'inline' | 'default',
+    }
+  }
+})
+```
+
+#### Alfy.buttons.renderSimple(selector, options)
+
+```js
+Alfy.buttons.renderSimple('#offer-container', {
+  /** @required */
+  productId: string,
+  /**
+   * Callback on modal closing
+   * @optional
+   */
+  onClose: (plan: IWarrantyPlan | null) => {},
+  /**
+   * optional theme configuration. Passed theme will merge and potentially override Alfy Merchant conf
+   * and theme options passed to Alfy.config
+   * @optional
+   */
+  theme?: {
+     /**
+      * for theme primary color for this widget
+      * @optional
+      */
+    primaryColor?: string,
+    button?: {
+      /**
+       * enable button slim mode with much thinner padding
+       * @default false
+       * @optional
+       */
+      slim?: bool,
+      /**
+       * enable full-width button instead of auto-width 
+       * @default false
+       * @optional
+       */
+      fullWidth?: bool,
+    }
   }
 })
 ```
@@ -299,6 +412,10 @@ Alfy.modal.open({
   theme: {
     primaryColor: string
   },
-  onClose(plan: IWarrantyPlan | null) {}
+  /**
+   * Callback on modal closing
+   * @optional
+   */
+  onClose: (plan: IWarrantyPlan | null) => {}
 })
 ```
