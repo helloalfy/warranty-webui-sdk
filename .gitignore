@@ -35,3 +35,5 @@ node_modules
 
 # Helm chart dependencies
 **/charts/*.tgz
+
+/tmp
