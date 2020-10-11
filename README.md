@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://assets.helloalfy.com/logo.svg" />
+  <img src="https://assets.helloalfy.com/logo.svg" height="90px"/>
 
   <h1 align="center">Alfy Warranty WebUI SDK</h1>
 </p>
